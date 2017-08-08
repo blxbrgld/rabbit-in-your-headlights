@@ -1,0 +1,53 @@
+package gr.blxbrgld.rabbit.configuration;
+
+import gr.blxbrgld.rabbit.messaging.Receiver;
+import gr.blxbrgld.rabbit.utils.Constants;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Messaging Configuration Class
+ * @author blxbrgld
+ */
+@Configuration
+public class MessagingConfiguration { //TODO How Do I Specify Connection Properties / Credentials et.al.
+
+    @Bean
+    Queue queue() {
+        return new Queue(Constants.QUEUE_NAME, false); //durable = false
+    }
+
+    @Bean
+    TopicExchange topicExchange() {
+        return new TopicExchange(Constants.TOPIC_NAME);
+    }
+
+    @Bean
+    Binding binding(Queue queue, TopicExchange topicExchange) {
+        return BindingBuilder
+            .bind(queue)
+            .to(topicExchange)
+            .with(Constants.QUEUE_NAME);
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
+
+    @Bean
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(Constants.QUEUE_NAME);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+}
