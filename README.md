@@ -12,4 +12,7 @@
   <li><strong>Enable annotation processing</strong> under Preferences -> Compiler -> Annotation Processors</li>
 </ol>
 <h2>RabbitMQ As A Service</h2>
-//TODO
+<ul>
+  <li>Start RabbitMQ Service (instructions for Windows <a href="https://www.rabbitmq.com/install-windows.html">here</a>)</li>
+  <li>Access The HTTP API at http://127.0.0.1:15672</li>
+</ul>
