@@ -1,0 +1,6 @@
+*~
+*.iml
+.settings/
+.idea/
+target/
+doc/
