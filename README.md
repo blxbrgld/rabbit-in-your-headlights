@@ -9,5 +9,7 @@
 <h2>Project Lombok</h2>
 <ol>
   <li>Install Lombok Plugin</li>
-  <li>"Enable annotation processing" under Preferences -> Compiler -> Annotation Processors</li>
+  <li><strong>Enable annotation processing</strong> under Preferences -> Compiler -> Annotation Processors</li>
 </ol>
+<h2>RabbitMQ As A Service</h2>
+//TODO
