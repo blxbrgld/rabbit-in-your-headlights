@@ -2,11 +2,9 @@ package gr.blxbrgld.rabbit.configuration;
 
 import gr.blxbrgld.rabbit.messaging.Receiver;
 import gr.blxbrgld.rabbit.utils.Constants;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
@@ -17,20 +15,20 @@ import org.springframework.context.annotation.Configuration;
  * @author blxbrgld
  */
 @Configuration
-public class MessagingConfiguration { //TODO How Do I Specify Connection Properties / Credentials et.al.
+public class MessagingConfiguration { //TODO How Do I Specify Connection Properties / Virtual Host / Credentials et.al.
 
     @Bean
-    Queue queue() {
+    public Queue queue() {
         return new Queue(Constants.QUEUE_NAME, false); //durable = false
     }
 
     @Bean
-    TopicExchange topicExchange() {
+    public TopicExchange topicExchange() {
         return new TopicExchange(Constants.TOPIC_NAME);
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange topicExchange) {
+    public Binding binding(Queue queue, TopicExchange topicExchange) {
         return BindingBuilder
             .bind(queue)
             .to(topicExchange)
@@ -38,16 +36,21 @@ public class MessagingConfiguration { //TODO How Do I Specify Connection Propert
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 
     @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(Constants.QUEUE_NAME);
         container.setMessageListener(listenerAdapter);
         return container;
+    }
+
+    @Bean
+    public RabbitManagementTemplate managementTemplate() {
+        return new RabbitManagementTemplate(); //Construct a template using uri "localhost:15672/api/" and user guest/guest
     }
 }
