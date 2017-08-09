@@ -33,8 +33,9 @@ public class ManagementController {
 
     @RequestMapping("exchanges")
     public String getExchanges(Model model) {
-        List<String> names = managementTemplate.getExchanges(virtualHost).stream()
-            .map(Exchange::getName)
+        List<String> names = managementTemplate.getExchanges(virtualHost)
+            .stream()
+            .map(e -> "".equals(e.getName()) ? "(AMQP default)" : e.getName())
             .collect(Collectors.toList());
         model.addAttribute("exchanges", names);
         return Constants.EXCHANGES_PAGE;
