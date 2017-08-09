@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,15 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class MessagingConfiguration {
+
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+    @Value("${spring.rabbitmq.http.port}")
+    private String port;
+    @Value("${spring.rabbitmq.username}")
+    private String username;
+    @Value("${spring.rabbitmq.password}")
+    private String password;
 
     @Bean
     public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
@@ -50,7 +60,18 @@ public class MessagingConfiguration {
     }
 
     @Bean
-    public RabbitManagementTemplate managementTemplate() {
-        return new RabbitManagementTemplate(); //Construct a template using uri "localhost:15672/api/" and user guest/guest
+    public RabbitManagementTemplate managementTemplate() { //Construct A Template for "http://username:password@host:port/api/"
+        String uri = new StringBuilder()
+            .append("http://")
+            .append(username)
+            .append(":")
+            .append(password)
+            .append("@")
+            .append(host)
+            .append(":")
+            .append(port)
+            .append("/api/")
+            .toString();
+        return new RabbitManagementTemplate(uri);
     }
 }
