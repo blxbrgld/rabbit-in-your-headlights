@@ -1,6 +1,9 @@
 package gr.blxbrgld.rabbit.controllers;
 
+import gr.blxbrgld.rabbit.aop.LogMethodInvocation;
+import gr.blxbrgld.rabbit.utils.Constants;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * RabbitController Class
@@ -9,5 +12,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RabbitController {
 
-    //TODO Endpoint Implementation
+    @LogMethodInvocation
+    @RequestMapping("/")
+    public String home() { //TODO Do Something Meaningful With This Page
+        return Constants.HOME_PAGE;
+    }
 }

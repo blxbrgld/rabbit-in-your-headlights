@@ -1,0 +1,30 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+        <title layout:title-pattern="$CONTENT_TITLE">Title</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!--/* Bootstrap's CSS */-->
+        <link th:href="@{/bootstrap-3.3.6/css/bootstrap.min.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <!--/* Standard layout can be mixed with Layout Dialect */-->
+        <div th:replace="fragments/navbar :: navbar">Navbar</div>
+        <div class="container-fluid">
+            <div class="row" layout:fragment="content">
+                <h1>Static content for prototyping purposes only</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
+        </div>
+        <script th:src="@{/jquery-1.11.3/jquery-1.11.3.min.js}"></script>
+        <script th:src="@{/bootstrap-3.3.6/js/bootstrap.min.js}"></script>
+    </body>
+</html>

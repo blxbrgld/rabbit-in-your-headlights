@@ -21,12 +21,6 @@ public class RabbitRestController {
     private RabbitTemplate rabbitTemplate;
 
     @LogMethodInvocation
-    @RequestMapping("/")
-    public String home() { //TODO Delete This
-        return Constants.SUCCESS_MESSAGE; //Up And Running
-    }
-
-    @LogMethodInvocation
     @RequestMapping("/message")
     public String message(@RequestParam(value = "message", required = true) String message) { //TODO Delete This
         rabbitTemplate.convertAndSend(Constants.QUEUE_NAME, message);

@@ -14,5 +14,6 @@ public class Constants {
     public static final String TOPIC_NAME = "spring-boot-topic";
 
     // View Names
+    public static final String HOME_PAGE = "home";
     public static final String EXCHANGES_PAGE = "management/exchanges";
 }
