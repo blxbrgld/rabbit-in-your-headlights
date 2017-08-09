@@ -15,7 +15,16 @@ import org.springframework.context.annotation.Configuration;
  * @author blxbrgld
  */
 @Configuration
-public class MessagingConfiguration { //TODO How Do I Specify Connection Properties / Virtual Host / Credentials et.al.
+public class MessagingConfiguration {
+
+    @Bean
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(Constants.QUEUE_NAME);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
 
     @Bean
     public Queue queue() {
@@ -38,15 +47,6 @@ public class MessagingConfiguration { //TODO How Do I Specify Connection Propert
     @Bean
     public MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(Constants.QUEUE_NAME);
-        container.setMessageListener(listenerAdapter);
-        return container;
     }
 
     @Bean

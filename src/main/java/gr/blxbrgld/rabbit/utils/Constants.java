@@ -10,8 +10,8 @@ public class Constants {
     public static final String SUCCESS_MESSAGE = "OK";
 
     // RabbitMQ
-    public static final String QUEUE_NAME = "spring-boot";
-    public static final String TOPIC_NAME = "spring-boot-topic";
+    public static final String QUEUE_NAME = "headlights-queue";
+    public static final String TOPIC_NAME = "headlights-topic";
 
     // View Names
     public static final String HOME_PAGE = "home";
