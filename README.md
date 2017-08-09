@@ -2,6 +2,8 @@
 <p>Frameworks/Technologies Used:</p>
 <ul>
   <li>Spring Boot</li>
+  <li>Spring AMQP</li>
+  <li>Spring Social Twitter</li>
   <li>RabbitMQ</li>
   <li>Docker</li>
   <li>Lombok</li>

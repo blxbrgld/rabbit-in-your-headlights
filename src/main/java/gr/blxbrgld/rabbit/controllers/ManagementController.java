@@ -2,7 +2,6 @@ package gr.blxbrgld.rabbit.controllers;
 
 import gr.blxbrgld.rabbit.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
