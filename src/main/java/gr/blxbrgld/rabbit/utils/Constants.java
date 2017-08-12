@@ -15,7 +15,7 @@ public class Constants {
     public static final String TOPIC_NAME = "headlights-topic";
 
     // Twitter
-    public static final long WORLDWIDE_WOE = 1L; // Yahoo Where On Earth ID representing the entire world
+    public static final long WORLDWIDE_WOE = 23424833L; // Yahoo Where On Earth ID representing Greece
 
     // View Names
     public static final String HOME_PAGE = "home";
