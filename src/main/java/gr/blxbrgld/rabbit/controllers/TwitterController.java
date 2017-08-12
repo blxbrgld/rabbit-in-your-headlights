@@ -1,19 +1,16 @@
 package gr.blxbrgld.rabbit.controllers;
 
-import gr.blxbrgld.rabbit.enums.TimelineType;
+import gr.blxbrgld.rabbit.services.TwitterService;
 import gr.blxbrgld.rabbit.utils.Constants;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.Trends;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.TwitterProfile;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,46 +22,36 @@ import java.util.List;
 public class TwitterController {
 
     @Autowired
-    private TwitterTemplate twitterTemplate;
+    private TwitterService twitterService;
 
     @RequestMapping("friends")
     public List<TwitterProfile> friends() {
-        return twitterTemplate.friendOperations().getFriends();
+        return twitterService.friends();
     }
 
     @RequestMapping("followers")
     public List<TwitterProfile> followers() {
-        return twitterTemplate.friendOperations().getFollowers();
+        return twitterService.followers();
     }
 
     @RequestMapping("timeline/{type}")
     public List<Tweet> timeline(@PathVariable("type") String type) {
-        List<Tweet> results = new ArrayList<>();
-        TimelineType timelineType = StringUtils.trimToNull(type)!=null && TimelineType.get(type)!=null ? TimelineType.get(type) : TimelineType.HOME;
-        switch(timelineType) {
-            case HOME:
-                results = twitterTemplate.timelineOperations().getHomeTimeline();
-                break;
-            case USER:
-                results = twitterTemplate.timelineOperations().getUserTimeline();
-                break;
-            case FAVORITES:
-                results = twitterTemplate.timelineOperations().getFavorites();
-                break;
-            case MENTIONS:
-                results = twitterTemplate.timelineOperations().getMentions();
-                break;
-        }
-        return results;
+        return twitterService.timeline(type);
     }
 
     @RequestMapping("trends")
     public Trends trends() {
-        return twitterTemplate.searchOperations().getLocalTrends(Constants.WORLDWIDE_WOE);
+        return twitterService.trends();
     }
 
     @RequestMapping("search")
     public List<Tweet> search(@RequestParam("query") String query) { //TODO Select The Number Of Results
-        return twitterTemplate.searchOperations().search(query).getTweets();
+        return twitterService.search(query);
+    }
+
+    @RequestMapping("tweet")
+    public String tweet(@RequestParam("text") String text) {
+        twitterService.tweet(text);
+        return Constants.SUCCESS_MESSAGE;
     }
 }

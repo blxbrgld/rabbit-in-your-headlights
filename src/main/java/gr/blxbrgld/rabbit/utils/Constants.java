@@ -7,7 +7,8 @@ package gr.blxbrgld.rabbit.utils;
 public class Constants {
 
     // Labels and Messages
-    public static final String SUCCESS_MESSAGE = "OK";
+    public static final String SUCCESS_MESSAGE = "SUCCESS";
+    public static final String ERROR_MESSAGE = "ERROR";
 
     // RabbitMQ
     public static final String QUEUE_NAME = "headlights-queue";
