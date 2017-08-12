@@ -19,4 +19,4 @@
   <li>Access The HTTP API at http://127.0.0.1:15672</li>
 </ul>
 <h2>Twitter Template</h2>
-The Application Defines A TwitterTemplate Bean Which Needs The <b>consumerKey, consumerSecret, accessToken, accessTokenSecret</b> Property Values. These Are Related To The Twitter Application In Use (create one <a href="https://apps.twitter.com">here</a>), and since we can not commit the values to GitHub, we chose to provide them as JVM parameters.
+The Application Defines A TwitterTemplate Bean Which Needs The <b>consumerKey, consumerSecret, accessToken,</b> and <b>accessTokenSecret</b> Property Values. These Are Related To The Twitter Application In Use (create one <a href="https://apps.twitter.com">here</a>), and since we can not commit them to GitHub, we chose to provide them as JVM parameters. Alternatively they can be defined as members of a .properties file.
