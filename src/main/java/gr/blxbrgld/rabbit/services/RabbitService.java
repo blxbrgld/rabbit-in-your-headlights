@@ -9,4 +9,6 @@ import java.util.List;
 public interface RabbitService {
 
     List<String> getExchanges();
+
+    void trendsToQueue();
 }
