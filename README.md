@@ -18,3 +18,5 @@
   <li>Start RabbitMQ Service (instructions for Windows <a href="https://www.rabbitmq.com/install-windows.html">here</a>)</li>
   <li>Access The HTTP API at http://127.0.0.1:15672</li>
 </ul>
+<h2>Twitter Template</h2>
+The Application Defines A TwitterTemplate Bean Which Needs The <b>consumerKey, consumerSecret, accessToken, accessTokenSecret</b> Property Values. These Are Related To The Twitter Application In Use (create one <a href="https://apps.twitter.com">here</a>), and since we can not commit the values to GitHub, we chose to provide them as JVM parameters.
