@@ -12,7 +12,7 @@ public class Constants {
 
     // RabbitMQ
     public static final String QUEUE_NAME = "headlights-queue";
-    public static final String TOPIC_NAME = "headlights-topic";
+    public static final String EXCHANGE_NAME = "headlights-exchange";
 
     // Twitter
     public static final long WORLDWIDE_WOE = 23424833L; // Yahoo Where On Earth ID representing Greece
