@@ -2,6 +2,8 @@ package gr.blxbrgld.rabbit.configuration;
 
 import gr.blxbrgld.rabbit.utils.Constants;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,5 +57,10 @@ public class MessagingConfiguration {
             .append("/api/")
             .toString();
         return new RabbitManagementTemplate(uri);
+    }
+
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
     }
 }

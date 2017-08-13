@@ -18,9 +18,9 @@ public class ManagementController {
     @Autowired
     private RabbitService rabbitService;
 
-    @RequestMapping("exchanges")
+    @RequestMapping("queues")
     public String getExchanges(Model model) {
-        model.addAttribute("exchanges", rabbitService.getExchanges());
-        return Constants.EXCHANGES_PAGE;
+        model.addAttribute("exchanges", rabbitService.getQueues());
+        return Constants.QUEUES_PAGE;
     }
 }
