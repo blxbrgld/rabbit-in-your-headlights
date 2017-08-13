@@ -1,12 +1,8 @@
 package gr.blxbrgld.rabbit.configuration;
 
-import gr.blxbrgld.rabbit.messaging.Receiver;
 import gr.blxbrgld.rabbit.utils.Constants;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,22 +24,13 @@ public class MessagingConfiguration {
     private String password;
 
     @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(Constants.QUEUE_NAME);
-        container.setMessageListener(listenerAdapter);
-        return container;
-    }
-
-    @Bean
     public Queue queue() {
-        return new Queue(Constants.QUEUE_NAME, false); //durable = false
+        return new Queue(Constants.QUEUE_NAME, false); //durable = false, No Need To Survive Broker Restarts
     }
 
     @Bean
-    public TopicExchange topicExchange() {
-        return new TopicExchange(Constants.TOPIC_NAME);
+    public TopicExchange exchange() {
+        return new TopicExchange(Constants.EXCHANGE_NAME);
     }
 
     @Bean
@@ -52,11 +39,6 @@ public class MessagingConfiguration {
             .bind(queue)
             .to(topicExchange)
             .with(Constants.QUEUE_NAME);
-    }
-
-    @Bean
-    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 
     @Bean
