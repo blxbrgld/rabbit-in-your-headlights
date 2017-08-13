@@ -13,10 +13,7 @@ import org.springframework.social.twitter.api.Trend;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +57,7 @@ public class RabbitServiceImpl implements RabbitService {
      */
     @Override
     public Map<String, Map<String, Integer>> getQueues() {
-        Map<String, Map<String, Integer>> outer = new HashMap<>();
+        Map<String, Map<String, Integer>> outer = new LinkedHashMap<>();
         for(String exchangeName : getExchanges()) {
             Map<String, Integer> inner = new HashMap<>();
             List<Binding> bindings = managementTemplate.getBindingsForExchange(virtualHost, exchangeName);
