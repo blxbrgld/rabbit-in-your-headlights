@@ -6,7 +6,7 @@
     <body>
         <div layout:fragment="content">
             <div class="col-xs-12">
-                <h2>Exchanges</h2>
+                <h2>Queues <small>Only Queues With Messages Are Shown Here.</small></h2>
                 <p th:if="${#lists.isEmpty(exchanges)}" th:text="'No Exchanges.'">No Exchanges.</p>
                 <div th:unless="${#lists.isEmpty(exchanges)}" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div th:each="exchange,iter : ${exchanges}" class="panel panel-default" th:with="heading=|heading${iter.index}|">
