@@ -11,8 +11,10 @@ public class Constants {
     public static final String ERROR_MESSAGE = "ERROR";
 
     // RabbitMQ
-    public static final String QUEUE_NAME = "headlights-queue";
-    public static final String EXCHANGE_NAME = "headlights-exchange";
+    public static final String DEFAULT_DIRECT_EXCHANGE = "amq.direct";
+    public static final String DEFAULT_FANOUT_EXCHANGE = "amq.fanout";
+    public static final String DEFAULT_HEADERS_EXCHANGE = "amq.headers";
+    public static final String DEFAULT_TOPIC_EXCHANGE = "amq.topic";
 
     // Twitter
     public static final long WORLDWIDE_WOE = 23424833L; // Yahoo Where On Earth ID representing Greece

@@ -12,6 +12,12 @@ import java.util.Map;
 public interface RabbitService {
 
     /**
+     * Get A List Of All Registered Exchange Names
+     * @return List Of Exchange Names
+     */
+    List<String> getExchangeNames();
+
+    /**
      * Declare An Exchange Given It's Name And Type. The Method Checks If The Exchange Already Exist In The Application's Virtual Host
      * @param name Exchange's Name
      * @param type Exchange's Type
@@ -30,6 +36,12 @@ public interface RabbitService {
      * @param name Exchange's Name
      */
     void deleteExchange(String name);
+
+    /**
+     * Get A List Of All Registered Queue Names
+     * @return List Of Queue Names
+     */
+    List<String> getQueueNames();
 
     /**
      * Declare A Queue And Bind It To The Given Exchange. The Method Checks If The Queue and Exchange Already Exist In The Application's Virtual Host
@@ -60,12 +72,6 @@ public interface RabbitService {
     Integer purgeQueue(String name);
 
     /**
-     * Get A List Of All Registered Exchange Names
-     * @return List Of Exchange Names
-     */
-    List<String> getExchanges();
-
-    /**
      * Get A Map Of All Registered Exchanges Along With Their Related Queues Containing Messages
      * @return Map Of Exchanges and Queue
      */
@@ -79,5 +85,5 @@ public interface RabbitService {
     Integer queueCountOfMessages(String queueName);
 
     //TODO Javadoc
-    void trendsToQueue();
+    void produceTrends();
 }
