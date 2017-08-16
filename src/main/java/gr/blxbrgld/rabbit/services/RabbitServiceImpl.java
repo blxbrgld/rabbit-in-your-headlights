@@ -86,6 +86,20 @@ public class RabbitServiceImpl implements RabbitService {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public void deleteExchange(String name) {
+        // Delete Exchange's Queues
+        List<Binding> bindings = managementTemplate.getBindingsForExchange(virtualHost, name);
+        for(Binding binding : bindings) {
+            deleteQueue(binding.getDestination());
+        }
+        // Delete The Exchange
+        managementTemplate.deleteExchange(virtualHost, managementTemplate.getExchange(virtualHost, name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @LogMethodInvocation
     @Override
     public void declareQueue(String queueName, String exchangeName, ExchangeType exchangeType) {
@@ -114,6 +128,24 @@ public class RabbitServiceImpl implements RabbitService {
     @Override
     public boolean queueExists(String name) {
         return managementTemplate.getQueue(virtualHost, name) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteQueue(String name) {
+        managementTemplate.deleteQueue(virtualHost, managementTemplate.getQueue(virtualHost, name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer purgeQueue(String name) {
+        Integer countOfMessages = queueCountOfMessages(name); //Get The Number Of Existing Messages Before Purging
+        managementTemplate.purgeQueue(virtualHost, managementTemplate.getQueue(virtualHost, name));
+        return countOfMessages;
     }
 
     /**

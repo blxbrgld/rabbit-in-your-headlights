@@ -26,6 +26,12 @@ public interface RabbitService {
     boolean exchangeExists(String name);
 
     /**
+     * Delete An Exchange (And It's Related Queues) Given It's Name
+     * @param name Exchange's Name
+     */
+    void deleteExchange(String name);
+
+    /**
      * Declare A Queue And Bind It To The Given Exchange. The Method Checks If The Queue and Exchange Already Exist In The Application's Virtual Host
      * @param queueName Queue's Name
      * @param exchangeName Exchange's Name
@@ -39,6 +45,19 @@ public interface RabbitService {
      * @return boolean Indicating If The Queue Exists Or Not
      */
     boolean queueExists(String name);
+
+    /**
+     * Delete A Queue Given It's Name
+     * @param name Queue's Name
+     */
+    void deleteQueue(String name);
+
+    /**
+     * Purge A Queue's Messages Given It's Name
+     * @param name Queue's Name
+     * @return The Number Of Purged Messages
+     */
+    Integer purgeQueue(String name);
 
     /**
      * Get A List Of All Registered Exchange Names
