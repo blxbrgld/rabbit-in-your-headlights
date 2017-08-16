@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author blxbrgld
  */
 @Controller
-public class RabbitController {
+public class MainController {
 
     @LogMethodInvocation
     @RequestMapping("/")
