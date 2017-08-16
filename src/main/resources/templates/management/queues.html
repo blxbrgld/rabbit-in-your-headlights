@@ -13,6 +13,7 @@
                         <div class="panel-heading" role="tab" th:id="${heading}">
                             <h4 class="panel-title">
                                 <a th:text="${exchange.key}" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" th:href="|#${iter.index}|" aria-expanded="false" data-th-attr="aria-controls=${iter.index}">Exchange Name</a>
+                                <span th:if="${#maps.size(exchange.value)>0}" th:text="${#maps.size(exchange.value)}" class="badge">Count</span>
                             </h4>
                         </div>
                         <div th:id="${iter.index}" class="panel-collapse collapse" role="tabpanel" data-th-attr="aria-labelledby=${heading}">
