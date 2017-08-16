@@ -1,8 +1,11 @@
 package gr.blxbrgld.rabbit.services;
 
+import gr.blxbrgld.rabbit.aop.LogMethodInvocation;
+import gr.blxbrgld.rabbit.enums.ExchangeType;
 import gr.blxbrgld.rabbit.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -41,6 +44,78 @@ public class RabbitServiceImpl implements RabbitService {
     @Autowired
     private RabbitManagementTemplate managementTemplate;
 
+    private static boolean durable = false, autoDelete = false, exclusive = false; //TODO These Can Also Be Dynamically Declared
+
+    /**
+     * {@inheritDoc}
+     */
+    @LogMethodInvocation
+    @Override
+    public void declareExchange(String name, ExchangeType type) {
+        if(!exchangeExists(name)) {
+            log.info("Exchange With Name '{}' Does Not Exist. Trying To Create It With Type '{}'.", new Object[] { name, type.getCode() });
+            Exchange exchange;
+            switch (type) {
+                case TOPIC:
+                    exchange = new TopicExchange(name, durable, autoDelete);
+                    break;
+                case FANOUT:
+                    exchange = new FanoutExchange(name, durable, autoDelete);
+                    break;
+                case HEADERS:
+                    exchange = new HeadersExchange(name, durable, autoDelete);
+                    break;
+                case DIRECT:
+                default: //The default Case Creates A Direct Exchange Too
+                    exchange = new DirectExchange(name, durable, autoDelete);
+            }
+            managementTemplate.addExchange(virtualHost, exchange);
+        } else {
+            log.info("Exchange With Name '{}' Already Exists.", name);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean exchangeExists(String name) {
+        return managementTemplate.getExchange(virtualHost, name) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @LogMethodInvocation
+    @Override
+    public void declareQueue(String queueName, String exchangeName, ExchangeType exchangeType) {
+        declareExchange(exchangeName, exchangeType); //We Should Bind the Queue To An Exchange, So The Exchange Must Already Exist
+        if(!queueExists(queueName)) {
+            // Create The Queue
+            log.info("Queue With Name '{}' Does Not Exist. Trying To Create It.", queueName);
+            managementTemplate.addQueue(virtualHost, new Queue(queueName, durable, exclusive, autoDelete));
+            // Create The Binding
+            Binding binding = new Binding(
+                queueName,
+                Binding.DestinationType.QUEUE,
+                exchangeName,
+                queueName, // The Routing Key
+                null // Arguments Are Not Needed
+            );
+            rabbitAdmin.declareBinding(binding);
+        } else {
+            log.info("Queue With Name '{}' Already Exists.", queueName);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean queueExists(String name) {
+        return managementTemplate.getQueue(virtualHost, name) != null;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -55,6 +130,7 @@ public class RabbitServiceImpl implements RabbitService {
     /**
      * {@inheritDoc}
      */
+    @LogMethodInvocation
     @Override
     public Map<String, Map<String, Integer>> getQueues() {
         Map<String, Map<String, Integer>> outer = new LinkedHashMap<>();
