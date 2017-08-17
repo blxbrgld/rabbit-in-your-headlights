@@ -1,5 +1,6 @@
 package gr.blxbrgld.rabbit.services;
 
+import gr.blxbrgld.rabbit.aop.LogMethodExecutionTime;
 import gr.blxbrgld.rabbit.aop.LogMethodInvocation;
 import gr.blxbrgld.rabbit.enums.ExchangeType;
 import gr.blxbrgld.rabbit.utils.Constants;
@@ -181,6 +182,7 @@ public class RabbitServiceImpl implements RabbitService {
      * {@inheritDoc}
      */
     @LogMethodInvocation
+    @LogMethodExecutionTime
     @Override
     public Map<String, Map<String, Integer>> getQueues() {
         Map<String, Map<String, Integer>> outer = new LinkedHashMap<>();
@@ -233,9 +235,9 @@ public class RabbitServiceImpl implements RabbitService {
     }
 
     /**
-     * By Convention The Queue Names and Routing Keys Are The Same For This App. Every Producer That Need To Send A Message Must Check If The
+     * By Convention The Queue Names and Routing Keys Are The Same For This Application. Every Producer That Need To Send A Message Must Check If The
      * Queue / Binding Exists Or Not. For Performance Reasons We're Caching The Queue Names And Proceed According To This Cached Values. A Batch
-     * Method Producing Messages May Not Be A Problem, The Check Can Be Done Once At Beginning, But Not All Messages Will Be Generated In Batches.
+     * Method Producing Messages May Not Be A Problem (The Check Can Be Done Once At The Beginning), But Not All Messages Will Be Generated In This Way.
      * @param queueName The Queue's Name (and Routing Key)
      * @param exchangeName The Exchange's Name
      * @param exchangeType The Exchange's Type

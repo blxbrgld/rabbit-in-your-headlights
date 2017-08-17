@@ -66,6 +66,11 @@
             <artifactId>ehcache-core</artifactId>
             <version>2.6.11</version>
         </dependency>
+        <dependency>
+            <groupId>org.perf4j</groupId>
+            <artifactId>perf4j</artifactId>
+            <version>0.9.16</version>
+        </dependency>
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

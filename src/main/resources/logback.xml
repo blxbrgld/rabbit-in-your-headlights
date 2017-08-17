@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property resource="application.properties"/>
-    <!-- Console Appender -->
+    <!-- Appenders -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <encoder>
             <pattern>[%-5level] [%t] %d{yyyy-MM-dd HH:mm:ss.SSS} %c{1} [%F:%L] - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- The Main Appender -->
     <appender name="MAIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${logback.path}/Rabbit.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logback.path}/Rabbit.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%-5level] [%t] %d{yyyy-MM-dd HH:mm:ss.SSS} %c{1} [%F:%L] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="PERF4J" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logback.path}/Statistics.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.path}/Statistics.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -25,4 +34,8 @@
         <appender-ref ref="CONSOLE" />
     </root>
     <logger name="gr.blxbrgld" level="DEBUG" />
+    <logger name="org.perf4j.TimingLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="PERF4J"/>
+    </logger>
 </configuration>
