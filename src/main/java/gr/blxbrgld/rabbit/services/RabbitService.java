@@ -1,5 +1,6 @@
 package gr.blxbrgld.rabbit.services;
 
+import gr.blxbrgld.rabbit.domain.Exchange;
 import gr.blxbrgld.rabbit.enums.ExchangeType;
 
 import java.util.List;
@@ -16,6 +17,20 @@ public interface RabbitService {
      * @return List Of Exchange Names
      */
     List<String> getExchangeNames();
+
+    /**
+     * Get An gr.blxbrgld.rabbit.domain.Exchange Object Given It's Name
+     * @param name Exchange's Name
+     * @return Exchange Object
+     */
+    Exchange getExchange(String name);
+
+    /**
+     * Get A Map Of All Exchange's Queues Along With The Count Of Their Messages
+     * @param name Exchange's Name
+     * @return Map Of Exchange's Queues
+     */
+    Map<String, Integer> getExchangeQueues(String name);
 
     /**
      * Declare An Exchange Given It's Name And Type. The Method Checks If The Exchange Already Exist In The Application's Virtual Host

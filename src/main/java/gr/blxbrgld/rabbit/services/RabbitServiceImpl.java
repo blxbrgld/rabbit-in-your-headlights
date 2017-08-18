@@ -6,6 +6,7 @@ import gr.blxbrgld.rabbit.enums.ExchangeType;
 import gr.blxbrgld.rabbit.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
@@ -58,6 +59,31 @@ public class RabbitServiceImpl implements RabbitService {
             .stream()
             .map(e -> "".equals(e.getName()) ? "(AMQP default)" : e.getName())
             .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public gr.blxbrgld.rabbit.domain.Exchange getExchange(String name) {
+        gr.blxbrgld.rabbit.domain.Exchange exchange = new gr.blxbrgld.rabbit.domain.Exchange();
+        BeanUtils.copyProperties(managementTemplate.getExchange(virtualHost, name), exchange);
+        exchange.setQueues(getExchangeQueues(name));
+        return exchange;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Integer> getExchangeQueues(String name) {
+        Map<String, Integer> result = new LinkedHashMap<>();
+        List<Binding> bindings = managementTemplate.getBindingsForExchange(virtualHost, name);
+        for(Binding binding : bindings) {
+            String queueName = binding.getDestination();
+            result.put(queueName, queueCountOfMessages(queueName));
+        }
+        return result;
     }
 
     /**
@@ -185,20 +211,11 @@ public class RabbitServiceImpl implements RabbitService {
     @LogMethodExecutionTime
     @Override
     public Map<String, Map<String, Integer>> getQueues() {
-        Map<String, Map<String, Integer>> outer = new LinkedHashMap<>();
+        Map<String, Map<String, Integer>> result = new LinkedHashMap<>();
         for(String exchangeName : getExchangeNames()) {
-            Map<String, Integer> inner = new HashMap<>();
-            List<Binding> bindings = managementTemplate.getBindingsForExchange(virtualHost, exchangeName);
-            for(Binding binding : bindings) {
-                String queueName = binding.getDestination();
-                Integer queueCount = queueCountOfMessages(queueName);
-                if(queueCount>0) { //Keeping Only Queues With Messages
-                    inner.put(queueName, queueCount);
-                }
-            }
-            outer.put(exchangeName, inner);
+            result.put(exchangeName, getExchangeQueues(exchangeName));
         }
-        return outer;
+        return result;
     }
 
     /**

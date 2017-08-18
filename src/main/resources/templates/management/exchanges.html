@@ -1,12 +1,12 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/main">
     <head>
-        <title>RabbitMQ Queues</title>
+        <title>Exchanges List</title>
     </head>
     <body>
         <div layout:fragment="content">
             <div class="col-xs-12">
-                <h2>Queues <small>Only Queues With Messages Are Shown Here.</small></h2>
+                <h2>List Of Exchanges</h2>
                 <p th:if="${#lists.isEmpty(exchanges)}" th:text="'No Exchanges.'">No Exchanges.</p>
                 <div th:unless="${#lists.isEmpty(exchanges)}" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div th:each="exchange,iter : ${exchanges}" class="panel panel-default" th:with="heading=|heading${iter.index}|">
@@ -14,15 +14,18 @@
                             <h4 class="panel-title">
                                 <a th:text="${exchange.key}" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" th:href="|#${iter.index}|" aria-expanded="false" data-th-attr="aria-controls=${iter.index}">Exchange Name</a>
                                 <span th:if="${#maps.size(exchange.value)>0}" th:text="${#maps.size(exchange.value)}" class="badge">Count</span>
+                                <a href="/management/exchange" th:href="@{/management/exchange(name=${exchange.key})}" class="pull-right">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </a>
                             </h4>
                         </div>
                         <div th:id="${iter.index}" class="panel-collapse collapse" role="tabpanel" data-th-attr="aria-labelledby=${heading}">
                             <div class="panel-body">
-                                <span th:if="${#maps.size(exchange.value)==0}">There Are No Queues Containing Messages.</span>
+                                <span th:if="${#maps.size(exchange.value)==0}">There Are No Queues For This Exchange.</span>
                                 <span th:unless="${#maps.size(exchange.value)==0}" th:remove="tag">
                                     <a th:each="queue : ${exchange.value}" href="#">
-                                        <span th:text="${queue.key}">Name</span>
-                                        <span th:text="${queue.value}" class="badge">Count</span>
+                                        <span th:text="${queue.key}">Queue Name</span>
+                                        <span th:text="${queue.value}" class="badge">Count of Messages</span>
                                     </a>
                                 </span>
                             </div>

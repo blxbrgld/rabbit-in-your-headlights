@@ -12,7 +12,10 @@ import java.util.Date;
  * Tweet Domain Object (A Lighter Version of org.springframework.social.twitter.api.Tweet)
  * @author blxbrgld
  */
-@Getter @Setter @NoArgsConstructor @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Tweet implements Serializable {
 
     private long id;

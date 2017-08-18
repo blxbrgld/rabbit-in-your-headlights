@@ -22,5 +22,6 @@ public class Constants {
     // View Names
     public static final String HOME_PAGE = "home";
     public static final String ERROR_PAGE = "error";
-    public static final String QUEUES_PAGE = "management/queues";
+    public static final String EXCHANGES_PAGE = "management/exchanges";
+    public static final String EXCHANGE_PAGE = "management/exchange";
 }

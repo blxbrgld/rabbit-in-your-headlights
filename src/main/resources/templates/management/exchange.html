@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/main">
+    <head>
+        <title>Exchange Info</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="col-xs-12">
+                <h2>Exchange Info</h2>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr><td class="td-label">Name</td><td th:text="${exchange.name}"></td></tr>
+                        <tr><td class="td-label">Type</td><td th:text="${exchange.type}"></td></tr>
+                        <tr><td class="td-label">Durable</td><td th:text="${exchange.durable}"></td></tr>
+                        <tr><td class="td-label">AutoDelete</td><td th:text="${exchange.autoDelete}"></td></tr>
+                        <tr><td class="td-label">Delayed</td><td th:text="${exchange.delayed}"></td></tr>
+                        <tr><td class="td-label">Internal</td><td th:text="${exchange.internal}"></td></tr>
+                        <tr th:if="${#maps.size(exchange.arguments)>0}">
+                            <td class="td-label">Arguments</td><td th:text="${exchange.arguments}"></td>
+                        </tr>
+                        <tr th:if="${#maps.size(exchange.queues)>0}">
+                            <td class="td-label">Queues</td>
+                            <td>
+                                <th:block th:each="queue : ${exchange.queues}">
+                                    <span th:text="${queue.key}">Queue Name</span>
+                                    <span th:text="${queue.value}" class="badge">Count of Messages</span>
+                                </th:block>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Management Controller For RabbitMQ Server
@@ -18,9 +19,15 @@ public class ManagementController {
     @Autowired
     private RabbitService rabbitService;
 
-    @RequestMapping("queues")
+    @RequestMapping("exchanges")
     public String getExchanges(Model model) {
         model.addAttribute("exchanges", rabbitService.getQueues());
-        return Constants.QUEUES_PAGE;
+        return Constants.EXCHANGES_PAGE;
+    }
+
+    @RequestMapping("exchange")
+    public String getExchange(@RequestParam("name") String name, Model model) {
+        model.addAttribute("exchange", rabbitService.getExchange(name));
+        return Constants.EXCHANGE_PAGE;
     }
 }
