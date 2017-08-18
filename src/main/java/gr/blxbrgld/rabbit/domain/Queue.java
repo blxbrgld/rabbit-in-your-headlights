@@ -18,6 +18,8 @@ import java.util.Map;
 public class Queue {
 
     private String name;
+    private String exchangeFrom;
+    private String routingKey;
     private boolean durable;
     private boolean exclusive;
     private boolean autoDelete;

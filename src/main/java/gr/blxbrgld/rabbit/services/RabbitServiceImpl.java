@@ -158,6 +158,12 @@ public class RabbitServiceImpl implements RabbitService {
     public gr.blxbrgld.rabbit.domain.Queue getQueue(String name) {
         gr.blxbrgld.rabbit.domain.Queue queue = new gr.blxbrgld.rabbit.domain.Queue();
         BeanUtils.copyProperties(managementTemplate.getQueue(virtualHost, name), queue);
+        for(Binding binding : managementTemplate.getBindings(virtualHost)) {
+            if(name.equals(binding.getDestination())) {
+                queue.setExchangeFrom(binding.getExchange());
+                queue.setRoutingKey(binding.getRoutingKey());
+            }
+        }
         queue.setCountOfMessages(queueCountOfMessages(name));
         return queue;
     }

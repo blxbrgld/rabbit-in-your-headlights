@@ -10,6 +10,8 @@
                 <table class="table table-striped">
                     <tbody>
                         <tr><td class="td-label">Name</td><td th:text="${queue.name}"></td></tr>
+                        <tr><td class="td-label">Exchange From</td><td th:text="${queue.exchangeFrom}"></td></tr>
+                        <tr><td class="td-label">Routing Key</td><td th:text="${queue.routingKey}"></td></tr>
                         <tr><td class="td-label">Durable</td><td th:text="${queue.durable}"></td></tr>
                         <tr><td class="td-label">Exclusive</td><td th:text="${queue.exclusive}"></td></tr>
                         <tr><td class="td-label">AutoDelete</td><td th:text="${queue.autoDelete}"></td></tr>
