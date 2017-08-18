@@ -23,10 +23,10 @@
                             <div class="panel-body">
                                 <span th:if="${#maps.size(exchange.value)==0}">There Are No Queues For This Exchange.</span>
                                 <span th:unless="${#maps.size(exchange.value)==0}" th:remove="tag">
-                                    <a th:each="queue : ${exchange.value}" href="#">
-                                        <span th:text="${queue.key}">Queue Name</span>
+                                    <th:block th:each="queue : ${exchange.value}">
+                                        <a href="/management/queue.html" th:href="@{/management/queue(name=${queue.key})}" th:text="${queue.key}" class="badged">Queue Name</a>
                                         <span th:text="${queue.value}" class="badge">Count of Messages</span>
-                                    </a>
+                                    </th:block>
                                 </span>
                             </div>
                         </div>

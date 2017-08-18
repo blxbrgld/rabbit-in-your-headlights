@@ -2,3 +2,10 @@
     font-weight: bold;
     width: 250px;
 }
+.badged {
+    text-decoration: none !important;
+    margin-left: 10px;
+}
+.panel-body .badged:first-child, td .badged:first-child {
+    margin-left: 0;
+}

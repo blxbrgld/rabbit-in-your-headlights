@@ -22,7 +22,7 @@
                             <td class="td-label">Queues</td>
                             <td>
                                 <th:block th:each="queue : ${exchange.queues}">
-                                    <a href="/management/queue.html" th:href="@{/management/queue(name=${queue.key})}" th:text="${queue.key}">Queue Name</a>
+                                    <a href="/management/queue.html" th:href="@{/management/queue(name=${queue.key})}" th:text="${queue.key}" class="badged">Queue Name</a>
                                     <span th:text="${queue.value}" class="badge">Count of Messages</span>
                                 </th:block>
                             </td>
