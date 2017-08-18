@@ -30,4 +30,10 @@ public class ManagementController {
         model.addAttribute("exchange", rabbitService.getExchange(name));
         return Constants.EXCHANGE_PAGE;
     }
+
+    @RequestMapping("queue")
+    public String getQueue(@RequestParam("name") String name, Model model) {
+        model.addAttribute("queue", rabbitService.getQueue(name));
+        return Constants.QUEUE_PAGE;
+    }
 }

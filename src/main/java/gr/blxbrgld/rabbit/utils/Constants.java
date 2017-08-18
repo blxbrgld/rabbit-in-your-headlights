@@ -24,4 +24,5 @@ public class Constants {
     public static final String ERROR_PAGE = "error";
     public static final String EXCHANGES_PAGE = "management/exchanges";
     public static final String EXCHANGE_PAGE = "management/exchange";
+    public static final String QUEUE_PAGE = "management/queue";
 }

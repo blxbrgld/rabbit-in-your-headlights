@@ -1,6 +1,7 @@
 package gr.blxbrgld.rabbit.services;
 
 import gr.blxbrgld.rabbit.domain.Exchange;
+import gr.blxbrgld.rabbit.domain.Queue;
 import gr.blxbrgld.rabbit.enums.ExchangeType;
 
 import java.util.List;
@@ -57,6 +58,13 @@ public interface RabbitService {
      * @return List Of Queue Names
      */
     List<String> getQueueNames();
+
+    /**
+     * Get An gr.blxbrgld.rabbit.domain.Queue Object Given It's Name
+     * @param name Queue's Name
+     * @return Queue Object
+     */
+    Queue getQueue(String name);
 
     /**
      * Declare A Queue And Bind It To The Given Exchange. The Method Checks If The Queue and Exchange Already Exist In The Application's Virtual Host

@@ -154,6 +154,17 @@ public class RabbitServiceImpl implements RabbitService {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public gr.blxbrgld.rabbit.domain.Queue getQueue(String name) {
+        gr.blxbrgld.rabbit.domain.Queue queue = new gr.blxbrgld.rabbit.domain.Queue();
+        BeanUtils.copyProperties(managementTemplate.getQueue(virtualHost, name), queue);
+        queue.setCountOfMessages(queueCountOfMessages(name));
+        return queue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @LogMethodInvocation
     @Override
     @CacheEvict(value = "queueNames", allEntries = true)

@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/main">
+    <head>
+        <title>Error Page</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="col-xs-12">
+                <h2>Queue Info</h2>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr><td class="td-label">Name</td><td th:text="${queue.name}"></td></tr>
+                        <tr><td class="td-label">Durable</td><td th:text="${queue.durable}"></td></tr>
+                        <tr><td class="td-label">Exclusive</td><td th:text="${queue.exclusive}"></td></tr>
+                        <tr><td class="td-label">AutoDelete</td><td th:text="${queue.autoDelete}"></td></tr>
+                        <tr th:if="${#maps.size(queue.arguments)>0}">
+                            <td class="td-label">Arguments</td><td th:text="${queue.arguments}"></td>
+                        </tr>
+                        <tr><td class="td-label">Count Of Messages</td><td th:text="${queue.countOfMessages}"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

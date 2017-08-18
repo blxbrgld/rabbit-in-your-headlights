@@ -14,7 +14,7 @@
                             <h4 class="panel-title">
                                 <a th:text="${exchange.key}" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" th:href="|#${iter.index}|" aria-expanded="false" data-th-attr="aria-controls=${iter.index}">Exchange Name</a>
                                 <span th:if="${#maps.size(exchange.value)>0}" th:text="${#maps.size(exchange.value)}" class="badge">Count</span>
-                                <a href="/management/exchange" th:href="@{/management/exchange(name=${exchange.key})}" class="pull-right">
+                                <a href="/management/exchange.html" th:href="@{/management/exchange(name=${exchange.key})}" class="pull-right">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </a>
                             </h4>
