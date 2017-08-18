@@ -6,7 +6,6 @@ import gr.blxbrgld.rabbit.enums.ExchangeType;
 import gr.blxbrgld.rabbit.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
@@ -48,7 +47,7 @@ public class RabbitServiceImpl implements RabbitService {
     @Autowired
     private RabbitManagementTemplate managementTemplate;
 
-    private static boolean durable = false, autoDelete = false, exclusive = false; //TODO These Can Also Be Dynamically Declared
+    private static final boolean durable = false, autoDelete = false, exclusive = false; //TODO These Can Also Be Dynamically Declared
 
     /**
      * {@inheritDoc}
@@ -158,12 +157,14 @@ public class RabbitServiceImpl implements RabbitService {
     public gr.blxbrgld.rabbit.domain.Queue getQueue(String name) {
         gr.blxbrgld.rabbit.domain.Queue queue = new gr.blxbrgld.rabbit.domain.Queue();
         BeanUtils.copyProperties(managementTemplate.getQueue(virtualHost, name), queue);
-        for(Binding binding : managementTemplate.getBindings(virtualHost)) {
-            if(name.equals(binding.getDestination())) {
-                queue.setExchangeFrom(binding.getExchange());
-                queue.setRoutingKey(binding.getRoutingKey());
+        managementTemplate.getBindings(virtualHost).forEach(
+            binding -> {
+                if(name.equals(binding.getDestination())) {
+                    queue.setExchangeFrom(binding.getExchange());
+                    queue.setRoutingKey(binding.getRoutingKey());
+                }
             }
-        }
+        );
         queue.setCountOfMessages(queueCountOfMessages(name));
         return queue;
     }
