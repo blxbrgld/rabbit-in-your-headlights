@@ -10,6 +10,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,8 @@ import java.util.stream.Collectors;
  * Rabbit Service Implementation
  * @author blxbrgld
  */
-@Service @Slf4j
+@Slf4j
+@Service
 public class RabbitServiceImpl implements RabbitService {
 
     @Value("${spring.rabbitmq.virtual-host}")
@@ -40,6 +42,9 @@ public class RabbitServiceImpl implements RabbitService {
 
     @Autowired
     private RabbitAdmin rabbitAdmin;
+
+    @Autowired
+    private SimpleMessageListenerContainer container;
 
     /*
      * A Convenience Wrapper Providing Access To The REST Methods Of "rabbitDomain:rabbitPort/api/"
@@ -190,6 +195,7 @@ public class RabbitServiceImpl implements RabbitService {
                 null // Arguments Are Not Needed
             );
             rabbitAdmin.declareBinding(binding);
+            container.addQueueNames(queueName); //Add Queue To SimpleMessageListenerContainer
         } else {
             log.info("Queue With Name '{}' Already Exists.", queueName);
         }
