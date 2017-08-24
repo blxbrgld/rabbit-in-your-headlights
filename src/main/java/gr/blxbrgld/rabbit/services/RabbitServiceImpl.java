@@ -14,8 +14,6 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.social.twitter.api.Trend;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Service;
@@ -115,7 +113,7 @@ public class RabbitServiceImpl implements RabbitService {
             }
             managementTemplate.addExchange(virtualHost, exchange);
         } else {
-            log.info("Exchange With Name '{}' Already Exists.", name);
+            log.debug("Exchange With Name '{}' Already Exists.", name);
         }
     }
 
@@ -131,7 +129,6 @@ public class RabbitServiceImpl implements RabbitService {
      * {@inheritDoc}
      */
     @Override
-    @CacheEvict(value = "queueNames", allEntries = true)
     public void deleteExchange(String name) {
         // Delete Exchange's Queues
         List<Binding> bindings = managementTemplate.getBindingsForExchange(virtualHost, name);
@@ -146,9 +143,7 @@ public class RabbitServiceImpl implements RabbitService {
      * {@inheritDoc}
      */
     @Override
-    @Cacheable("queueNames")
     public List<String> getQueueNames() {
-        log.debug("@Cacheable getQueueNames() Method Invoked. Regenerating Cache Value.");
         return managementTemplate.getQueues(virtualHost)
             .stream()
             .map(Queue::getName)
@@ -179,7 +174,6 @@ public class RabbitServiceImpl implements RabbitService {
      */
     @LogMethodInvocation
     @Override
-    @CacheEvict(value = "queueNames", allEntries = true)
     public void declareQueue(String queueName, String exchangeName, ExchangeType exchangeType) {
         declareExchange(exchangeName, exchangeType); //We Should Bind the Queue To An Exchange, So The Exchange Must Already Exist
         if(!queueExists(queueName)) {
@@ -197,7 +191,7 @@ public class RabbitServiceImpl implements RabbitService {
             rabbitAdmin.declareBinding(binding);
             container.addQueueNames(queueName); //Add Queue To SimpleMessageListenerContainer
         } else {
-            log.info("Queue With Name '{}' Already Exists.", queueName);
+            log.debug("Queue With Name '{}' Already Exists.", queueName);
         }
     }
 
@@ -213,7 +207,6 @@ public class RabbitServiceImpl implements RabbitService {
      * {@inheritDoc}
      */
     @Override
-    @CacheEvict(value = "queueNames", allEntries = true)
     public void deleteQueue(String name) {
         managementTemplate.deleteQueue(virtualHost, managementTemplate.getQueue(virtualHost, name));
     }
@@ -257,7 +250,7 @@ public class RabbitServiceImpl implements RabbitService {
     @Override
     public void produceTrends() {
         String queueName = "trends-queue";
-        declareQueueIfItDoesNotExist(queueName, Constants.DEFAULT_DIRECT_EXCHANGE, ExchangeType.DIRECT); //Declare Before Proceeding
+        declareQueue(queueName, Constants.DEFAULT_DIRECT_EXCHANGE, ExchangeType.DIRECT); //Declare Before Proceeding
         int counter = 0; //TODO Temporary Due Twitter's Rate Limits
         for(Trend trend : twitterService.trends().getTrends()) {
             if(counter < 3) {
@@ -272,22 +265,6 @@ public class RabbitServiceImpl implements RabbitService {
                 }
             }
             counter++;
-        }
-    }
-
-    /**
-     * By Convention The Queue Names and Routing Keys Are The Same For This Application. Every Producer That Need To Send A Message Must Check If The
-     * Queue / Binding Exists Or Not. For Performance Reasons We're Caching The Queue Names And Proceed According To This Cached Values. A Batch
-     * Method Producing Messages May Not Be A Problem (The Check Can Be Done Once At The Beginning), But Not All Messages Will Be Generated In This Way.
-     * @param queueName The Queue's Name (and Routing Key)
-     * @param exchangeName The Exchange's Name
-     * @param exchangeType The Exchange's Type
-     */
-    //TODO Looks Like Duplicate
-    //TODO Create An AOP Method?
-    private void declareQueueIfItDoesNotExist(String queueName, String exchangeName, ExchangeType exchangeType) {
-        if(!getQueueNames().contains(queueName)) {
-            declareQueue(queueName, exchangeName, exchangeType);
         }
     }
 }
