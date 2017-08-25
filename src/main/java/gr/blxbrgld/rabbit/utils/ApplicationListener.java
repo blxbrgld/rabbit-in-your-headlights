@@ -34,7 +34,7 @@ public class ApplicationListener {
         log.info("Adding All Existing RabbitMQ Queues To SimpleMessageListenerContainer.");
         List<String> existingQueues = rabbitService.getQueueNames() //DEAD_LETTER_QUEUE Should Not Be Added To Those The Listener Handles
             .stream()
-            .filter(s -> Constants.DEAD_LETTER_QUEUE.equals(s))
+            .filter(s -> !Constants.DEAD_LETTER_QUEUE.equals(s))
             .collect(Collectors.toList());
         container.addQueueNames(existingQueues.toArray(new String[existingQueues.size()]));
     }

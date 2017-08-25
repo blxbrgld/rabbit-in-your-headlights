@@ -61,6 +61,13 @@ public class MessagingConfiguration {
         return container;
     }
 
+    /*
+     * Messages From A Queue Can Be 'dead-lettered' When Any Of The Following Occur:
+     *
+     * 1. The Message Is Rejected (basic.reject or basic.nack) With requeue=false
+     * 2. The TTL For The Message Expires
+     * 3. The Queue Length Limit Is Exceeded
+     */
     @Bean
     public DirectExchange exchange() {
         return new DirectExchange(Constants.DEAD_LETTER_EXCHANGE);
