@@ -2,7 +2,6 @@ package gr.blxbrgld.rabbit.configuration;
 
 import gr.blxbrgld.rabbit.messaging.MessagesReceiver;
 import gr.blxbrgld.rabbit.services.RabbitService;
-import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
@@ -51,7 +50,7 @@ public class MessagingConfiguration {
 
     @Bean
     public MessageListenerAdapter listenerAdapter(MessagesReceiver messagesReceiver) {
-        return new MessageListenerAdapter(messagesReceiver, "handleMessage");
+        return new MessageListenerAdapter(messagesReceiver, "onMessage");
     }
 
     @Bean
@@ -59,8 +58,6 @@ public class MessagingConfiguration {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setMessageListener(listenerAdapter);
-        //TODO Uncomment The Following, Handle The Manual Ack
-        //container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return container;
     }
 }
