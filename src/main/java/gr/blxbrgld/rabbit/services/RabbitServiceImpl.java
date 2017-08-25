@@ -179,7 +179,10 @@ public class RabbitServiceImpl implements RabbitService {
         if(!queueExists(queueName)) {
             // Create The Queue
             log.info("Queue With Name '{}' Does Not Exist. Trying To Create It.", queueName);
-            managementTemplate.addQueue(virtualHost, new Queue(queueName, durable, exclusive, autoDelete));
+            Map<String, Object> arguments = new HashMap<>();
+            arguments.put("x-dead-letter-exchange", Constants.DEAD_LETTER_EXCHANGE);
+            arguments.put("x-dead-letter-routing-key", Constants.DEAD_LETTER_QUEUE); //Do Not Use Message's Routing Key
+            managementTemplate.addQueue(virtualHost, new Queue(queueName, durable, exclusive, autoDelete, arguments));
             // Create The Binding
             Binding binding = new Binding(
                 queueName,

@@ -1,13 +1,16 @@
 package gr.blxbrgld.rabbit.configuration;
 
 import gr.blxbrgld.rabbit.messaging.MessagesReceiver;
-import gr.blxbrgld.rabbit.services.RabbitService;
+import gr.blxbrgld.rabbit.utils.Constants;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +30,6 @@ public class MessagingConfiguration {
     private String username;
     @Value("${spring.rabbitmq.password}")
     private String password;
-
-    @Autowired
-    private RabbitService rabbitService;
 
     @Bean
     public RabbitManagementTemplate managementTemplate() { //Construct A Template for "http://username:password@host:port/api/"
@@ -59,5 +59,23 @@ public class MessagingConfiguration {
         container.setConnectionFactory(connectionFactory);
         container.setMessageListener(listenerAdapter);
         return container;
+    }
+
+    @Bean
+    public DirectExchange exchange() {
+        return new DirectExchange(Constants.DEAD_LETTER_EXCHANGE);
+    }
+
+    @Bean
+    public Queue queue() {
+        return new Queue(Constants.DEAD_LETTER_QUEUE, false);
+    }
+
+    @Bean
+    public Binding binding(Queue queue, DirectExchange exchange) {
+        return BindingBuilder
+            .bind(queue)
+            .to(exchange)
+            .with(Constants.DEAD_LETTER_QUEUE);
     }
 }

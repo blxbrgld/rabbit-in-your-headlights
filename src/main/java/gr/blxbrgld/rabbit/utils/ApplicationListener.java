@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Application Listener(s) Class
@@ -31,7 +32,10 @@ public class ApplicationListener {
     @EventListener(ContextRefreshedEvent.class)
     private void contextRefresh() {
         log.info("Adding All Existing RabbitMQ Queues To SimpleMessageListenerContainer.");
-        List<String> existingQueues = rabbitService.getQueueNames();
+        List<String> existingQueues = rabbitService.getQueueNames() //DEAD_LETTER_QUEUE Should Not Be Added To Those The Listener Handles
+            .stream()
+            .filter(s -> Constants.DEAD_LETTER_QUEUE.equals(s))
+            .collect(Collectors.toList());
         container.addQueueNames(existingQueues.toArray(new String[existingQueues.size()]));
     }
 }

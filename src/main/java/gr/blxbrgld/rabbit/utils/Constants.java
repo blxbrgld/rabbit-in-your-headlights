@@ -15,6 +15,8 @@ public class Constants {
     public static final String DEFAULT_FANOUT_EXCHANGE = "amq.fanout";
     public static final String DEFAULT_HEADERS_EXCHANGE = "amq.headers";
     public static final String DEFAULT_TOPIC_EXCHANGE = "amq.topic";
+    public static final String DEAD_LETTER_EXCHANGE = "dead-letter-exchange";
+    public static final String DEAD_LETTER_QUEUE = "dead-letter-queue";
 
     // Twitter
     public static final long WORLDWIDE_WOE = 23424833L; // Yahoo Where On Earth ID representing Greece

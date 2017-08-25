@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 public class MessagesReceiver implements MessageListener {
 
     /*
-     * When a listener throws an exception, it is wrapped in a ListenerExecutionFailedException and,
-     * normally the message is rejected and requeued by the broker. To Reject (And Not Requeue) Messages
+     * When A Listener Throws An Exception, It Is Wrapped In A ListenerExecutionFailedException And,
+     * Normally The Message Is Rejected And Requeued By The Broker. To Reject (And Not Requeue) Messages
      * That Fail With An Irrecoverable Error The Listener Can Throw An AmqpRejectAndDontRequeueException.
      *
      * https://docs.spring.io/spring-amqp//reference/html/_reference.html#exception-handling
@@ -26,7 +26,7 @@ public class MessagesReceiver implements MessageListener {
         String body = new String(message.getBody());
         if(validMessage(body)) {
             log.info("Message Received {}.", body);
-        } else {
+        } else { //Would Be Published To DEAD_LETTER_QUEUE
             throw new AmqpRejectAndDontRequeueException("AmqpRejectAndDontRequeueException Raised.");
         }
     }
